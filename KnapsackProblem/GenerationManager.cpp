@@ -65,12 +65,12 @@ void GenerationManager::reproduce()
 		// Mutations
 		int r = rand() % 100;
 		double rnd = (double)r / 100.0;
-		if (rnd >= mutationChance) {
+		if (rnd <= mutationChance) {
 			mutate(child1Solution);
 		}
 		r = rand() % 100;
 		rnd = (double)r / 100.0;
-		if (rnd >= mutationChance) {
+		if (rnd <= mutationChance) {
 			mutate(child2Solution);
 		}
 
@@ -87,6 +87,7 @@ void GenerationManager::reproduce()
 void GenerationManager::mutate(std::vector<bool>* s)
 {
 	int rnd = rand() % s->size();
+	bool test = (*s)[rnd];
 	if ((*s)[rnd]) {
 		(*s)[rnd] = false;
 	} else {
@@ -104,29 +105,36 @@ void GenerationManager::naturalSelection()
 
 Chromosome GenerationManager::geneticOptimize()
 {
-	std::cout << "Genetic optimizing." << std::endl;
+	std::cout << "Genetic optimizing." << std::endl << std::endl;
+	std::cout << "Starting value: " << population.back().getValue() << std::endl;
 	std::ofstream file("geneticAnalyze.txt");
 	signed long long startTime = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 	int stagnation = 0;
 	Chromosome bestSolution = population.at(0);
-	for (int i = 0; i < 10000; i++) {
+	int i;
+	for (i = 0; i < 10000; i++) {
 		reproduce();
 		naturalSelection();
 
 		Chromosome c = population.back();
-		if (bestSolution.getValue() <= c.getValue()) {
+		if (bestSolution.getValue() < c.getValue()) {
 			bestSolution = c;
 			stagnation = 0;
 		} else {
 			stagnation++;
-			if (stagnation >= 1000) {
+			if (stagnation >= 100) {
 				break;
 			}
 		}
 		signed long long timestampMcrs = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 		signed long timeSinceStartMicrs = timestampMcrs - startTime;
-		file << timeSinceStartMicrs << " " << bestSolution.getValue() << " " << population.at(0).getValue() << std::endl;
+		file << timeSinceStartMicrs << " " << bestSolution.getValue() << std::endl;
+		
 	}
+	signed long long timestampMcrs = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	signed long timeSinceStartMicrs = timestampMcrs - startTime;
+	std::cout << "Time: " << timeSinceStartMicrs / 1000 << "ms" << std::endl;
+	std::cout << "Iterations: " << i << std::endl;
 	return population.back();
 }
 
