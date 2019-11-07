@@ -3,10 +3,60 @@
 
 #include "pch.h"
 #include <iostream>
+#include <time.h>
+#include <vector>
+#include <algorithm>
+
+#include "Chromosome.h"
+#include "Item.h"
+#include "ItemGenerator.h"
+#include "Sorter.h"
+#include "Printer.h"
+#include "GenerationManager.h"
+
+std::vector<Item> items;
+bool useDefaultValues = true;
 
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	srand(time(NULL));
+
+	int numerOfItems = 100;
+	std::cout << "Number of items: ";
+	std::cin >> numerOfItems;
+
+	ItemGenerator generator;
+	items = generator.createItems(numerOfItems);
+
+	do {
+		int knapsackCapability = numerOfItems * 2.5;
+		int populationSize = 50;
+		double mutationChance = 0.5;
+
+		if (!useDefaultValues) {
+			std::cout << "Max weight: ";
+			std::cin >> knapsackCapability;
+			std::cout << "Population size: ";
+			std::cin >> populationSize;
+			
+		}
+		std::cout << "Mutation chance: ";
+		std::cin >> mutationChance;
+		
+		GenerationManager gm(&items, knapsackCapability, populationSize, mutationChance);
+		gm.createInitialPopulation();
+		Chromosome bestSolution = gm.geneticOptimize();
+		std::cout << "Best solution:" << std::endl;
+		Printer::printChromosome(bestSolution);
+
+		char cont;
+		std::cout << "Create new solution? (y/n)" << std::endl;
+		std::cin >> cont;
+		if (cont != 'y') {
+			break;
+		}
+	} while (true);
+	
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

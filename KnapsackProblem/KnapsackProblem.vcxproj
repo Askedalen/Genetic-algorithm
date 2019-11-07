@@ -151,9 +151,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Chromosome.h" />
+    <ClInclude Include="GenerationManager.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemGenerator.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Printer.h" />
+    <ClInclude Include="Sorter.h" />
+    <ClInclude Include="StartingSolutionGenerator.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Chromosome.cpp" />
+    <ClCompile Include="GenerationManager.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemGenerator.cpp" />
     <ClCompile Include="KnapsackProblem.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -161,6 +172,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Printer.cpp" />
+    <ClCompile Include="Sorter.cpp" />
+    <ClCompile Include="StartingSolutionGenerator.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
